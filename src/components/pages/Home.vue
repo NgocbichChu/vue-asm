@@ -1,5 +1,5 @@
 <template>
-    <div class="main">
+    <div class="main" >
         <div class="row">
             <div class="col-md-8 col-lg-8 p-4">
                 <!-- Post Card -->
@@ -103,10 +103,13 @@
 <script>
 </script>
 <style scoped>
-.main {
+/* .main {
+    background-color: #000;
+    height: 100vh;
+} */
+.row{
     background-color: #000;
 }
-
 .card-item {
     margin-left: 40rem;
 }

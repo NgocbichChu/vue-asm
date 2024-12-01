@@ -24,6 +24,7 @@
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
                 placeholder="Nhập email"
+                v-model="email"
               />
             </div>
             <div class="mb-3">
@@ -33,6 +34,7 @@
                 class="form-control"
                 id="exampleInputPassword1"
                 placeholder="Mật khẩu"
+                v-model="password"
               />
             </div>
             <div class="mb-3">
@@ -42,15 +44,17 @@
                 class="form-control"
                 id="exampleInputFullName"
                 placeholder="Tên đầy đủ"
+                v-model="fullName"
               />
             </div>
             <div class="mb-3">
               <!-- <label for="exampleInputPassword1" class="form-label">Password</label> -->
               <input
-                type="password"
+                type="text"
                 class="form-control"
                 id="exampleInputUserName"
                 placeholder="Tên người dùng"
+                v-model="userName"
               />
             </div>
             <div class="d-flex">
@@ -58,6 +62,7 @@
                 type="submit"
                 class="btn btn-primary"
                 style="width: 1000px"
+                @click.prevent="register"
               >
                 Đăng kí
               </button>
@@ -70,14 +75,30 @@
     <div class="card border-danger container mt-3" style="width: 20%">
       <div class="d-flex justify-content-center my-3">
         <span>Bạn có tài khoản?</span>
-        <a href="./Login.html" class="loginByFb ms-2"> Đăng nhập </a>
+        <router-link to="/" class="loginByFb ms-2"> Đăng nhập </router-link>
       </div>
     </div>
     </div>
 </template>
-<script>
-export default {
-    
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const email = ref('')
+const password = ref('')
+const fullName = ref('')
+const userName = ref('')
+const router = useRouter()
+
+const register = () => {
+  const user = {
+    email: email.value,
+    password: password.value,
+    fullName: fullName.value,
+    userName: userName.value
+  }
+  localStorage.setItem('user', JSON.stringify(user))
+  router.push('/')
 }
 </script>
 <style lang="">

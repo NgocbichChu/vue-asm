@@ -29,7 +29,7 @@
                     class="material-symbols-outlined me-4">
                     person
                 </span> Trang cá nhân</router-link>
-            <router-link to="/login" class="mb-3 d-flex align-items-center"><span
+            <router-link to="/" class="mb-3 d-flex align-items-center"><span
                     class="material-symbols-outlined me-4">
                     logout
                 </span> Đăng xuất</router-link>

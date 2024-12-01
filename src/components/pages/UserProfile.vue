@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container mt-3">
         <!-- Profile Section -->
         <div class="row mb-4">
             <!-- Profile Image -->
@@ -86,5 +86,6 @@
 <style scoped>
 .container {
     background-color: #000;
+    margin-left: 30rem;
 }
 </style>
