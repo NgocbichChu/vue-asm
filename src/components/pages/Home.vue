@@ -1,66 +1,28 @@
 <template>
-    <div class="main" >
+    <div class="main">
         <div class="row">
             <div class="col-md-8 col-lg-8 p-4">
                 <!-- Post Card -->
                 <div>
-                    <div class="card post-card mb-4 p-3 w-50 card-item">
+                    <div v-for="post in posts" :key="post.id" class="card post-card mb-4 p-3 w-50 card-item">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3 post-header">
                                 <img src="https://via.placeholder.com/40" alt="user" class="me-2">
-                                <strong>ahihi</strong> <span class="ms-auto text-muted">3 ngày trước</span>
+                                <strong>{{ post.user }}</strong> <span class="ms-auto text-light">{{ post.date }}</span>
                             </div>
-                            <img src="https://via.placeholder.com/600x400" class="post-image mb-3" alt="post">
+                            <img :src="post.image" class="post-image mb-3" :alt="`Post by ${post.user}`">
                             <div class="post-footer">
-                                <p><strong>qqwq.xi</strong> và những người khác đã thích</p>
-                                <p><strong>nqbichh.chu_</strong> 🐾💙</p>
-                                <p class="text-white-50">Xem 1 bình luận</p>
-                                <input type="text" class="form-control input-comment " placeholder="Thêm bình luận...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card post-card mb-4 p-3 w-50 card-item">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3 post-header">
-                                <img src="https://via.placeholder.com/40" alt="user" class="me-2">
-                                <strong>ahihi</strong> <span class="ms-auto text-muted">3 ngày trước</span>
-                            </div>
-                            <img src="https://via.placeholder.com/600x400" class="post-image mb-3" alt="post">
-                            <div class="post-footer">
-                                <p><strong>qqwq.xi</strong> và những người khác đã thích</p>
-                                <p><strong>nqbichh.chu_</strong> 🐾💙</p>
-                                <p class="text-white-50">Xem 1 bình luận</p>
-                                <input type="text" class="form-control input-comment " placeholder="Thêm bình luận...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card post-card mb-4 p-3 w-50 card-item">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3 post-header">
-                                <img src="https://via.placeholder.com/40" alt="user" class="me-2">
-                                <strong>ahihi</strong> <span class="ms-auto text-muted">3 ngày trước</span>
-                            </div>
-                            <img src="https://via.placeholder.com/600x400" class="post-image mb-3" alt="post">
-                            <div class="post-footer">
-                                <p><strong>qqwq.xi</strong> và những người khác đã thích</p>
-                                <p><strong>nqbichh.chu_</strong> 🐾💙</p>
-                                <p class="text-white-50">Xem 1 bình luận</p>
-                                <input type="text" class="form-control input-comment " placeholder="Thêm bình luận...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card post-card mb-4 p-3 w-50 card-item">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center mb-3 post-header">
-                                <img src="https://via.placeholder.com/40" alt="user" class="me-2">
-                                <strong>ahihi</strong> <span class="ms-auto text-muted">3 ngày trước</span>
-                            </div>
-                            <img src="https://via.placeholder.com/600x400" class="post-image mb-3" alt="post">
-                            <div class="post-footer">
-                                <p><strong>qqwq.xi</strong> và những người khác đã thích</p>
-                                <p><strong>nqbichh.chu_</strong> 🐾💙</p>
-                                <p class="text-white-50">Xem 1 bình luận</p>
-                                <input type="text" class="form-control input-comment " placeholder="Thêm bình luận...">
+                                <p><strong>{{ post.user }}</strong> và những người khác đã thích</p>
+                                <p class="text-white">{{ post.content }}</p>
+                                <div class="d-flex" v-for="comment in comments[post.id]" :key="comment.date">
+                                    <div class="justify-content-start">
+                                        <p class="text-primary me-2">{{ comment.user }}</p>
+                                        <p class="text-white">{{ comment.content }}</p>
+                                    </div>
+                                    <p class="text-success">{{ comment.date }}</p>
+                                </div>
+                                <input type="text" class="form-control input-comment " placeholder="Thêm bình luận..."
+                                    v-model="newComment" @keydown.enter="addComment(post.id)">
                             </div>
                         </div>
                     </div>
@@ -100,16 +62,55 @@
         </div>
     </div>
 </template>
-<script>
+<script setup>
+import { onMounted, ref } from 'vue';
+
+
+const posts = ref([]);
+const comments = ref({});
+const newComment = ref('');
+
+onMounted(() => {
+    getAllPosts();
+    getComments();
+})
+
+const getAllPosts = async () => {
+    const postInfo = JSON.parse(localStorage.getItem('posts')) || [];
+    posts.value = postInfo;
+}
+
+const addComment = async (id) => {
+    const postId = id; // Lấy ID của bài viết hiện tại
+    const comment = newComment.value; // Lấy giá trị của input bình luận
+    const comments = JSON.parse(localStorage.getItem('comments')) || {}; // Lấy danh sách bình luận từ localStorage
+
+    if (!comments[postId]) {
+        comments[postId] = [];
+    }
+
+    comments[postId].push({ user: JSON.parse(localStorage.getItem('currentUser')).userName, content: comment, date: new Date().toLocaleString() });
+
+    localStorage.setItem('comments', JSON.stringify(comments));
+
+    newComment.value = ''; // Reset giá trị của input bình luận
+    getComments();
+};
+
+const getComments = () => {
+    const commentsData = JSON.parse(localStorage.getItem('comments')) || {};
+    comments.value = commentsData;
+};
 </script>
 <style scoped>
 /* .main {
     background-color: #000;
     height: 100vh;
 } */
-.row{
+.row {
     background-color: #000;
 }
+
 .card-item {
     margin-left: 40rem;
 }
@@ -174,9 +175,11 @@
     color: #cccccc;
     font-style: italic;
 }
-.suggest{
+
+.suggest {
     margin-left: 5rem;
 }
+
 .suggestion-item {
     transition: transform 0.2s ease;
 }

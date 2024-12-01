@@ -22,22 +22,86 @@
             <a href="#" class="mb-3 d-flex align-items-center"><span class="material-symbols-outlined me-4">
                     favorite
                 </span> Thông báo</a>
-            <a href="#" class="mb-3 d-flex align-items-center"><span class="material-symbols-outlined me-4">
+            <button type="button" class="mb-3 d-flex align-items-center" data-bs-toggle="modal"
+                data-bs-target="#exampleModal"><span class="material-symbols-outlined me-4">
                     add
-                </span> Tạo</a>
+                </span> Tạo</button>
+
+            <!-- Modal -->
+
             <router-link to="/profile" class="mb-3 d-flex align-items-center"><span
                     class="material-symbols-outlined me-4">
                     person
                 </span> Trang cá nhân</router-link>
-            <router-link to="/" class="mb-3 d-flex align-items-center"><span
-                    class="material-symbols-outlined me-4">
+            <span @click="logout" class="mb-3 d-flex align-items-center"><span class="material-symbols-outlined me-4">
                     logout
-                </span> Đăng xuất</router-link>
+                </span> Đăng xuất</span>
+        </div>
+    </div>
+    <div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tạo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 d-none">
+                            <label for="user" class="form-label">User</label>
+                            <input type="text" class="form-control" id="user" placeholder="Enter first input"
+                                v-model="postInfo.user">
+                        </div>
+                        <div class="mb-3 d-none">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="date" placeholder="Enter first input"
+                                v-model="postInfo.date">
+                        </div>
+                        <div class="mb-3">
+                            <label for="input1" class="form-label">Image Url</label>
+                            <input type="text" class="form-control" id="input1" placeholder="Enter first input"
+                                v-model="postInfo.image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="input2" class="form-label">Content</label>
+                            <input type="text" class="form-control" id="input2" placeholder="Enter second input"
+                                v-model="postInfo.content">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="savePost">Post</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
-<script set up>
+<script setup>
+import { reactive } from 'vue';
 
+const postInfo = reactive({
+    id: Math.floor(Math.random() * 100000000) + 1,
+    user: JSON.parse(localStorage.getItem('currentUser')).userName,
+    date: new Date().toLocaleDateString(),
+    image: '',
+    content: ''
+})
+
+const savePost = () => {
+    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+    posts.push(postInfo);
+    localStorage.setItem('posts', JSON.stringify(posts));
+
+    postInfo.image = '';
+    postInfo.content = '';
+}
+
+const logout = () => {
+    localStorage.removeItem('isAuthenticated');
+    window.location.href = '/';
+    alert('Đăng xuat thanh cong');
+}
 </script>
 <style scoped>
 #logo {

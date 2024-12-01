@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-3">
+    <div class="container mt-3" v-if="user">
         <!-- Profile Section -->
         <div class="row mb-4">
             <!-- Profile Image -->
@@ -10,7 +10,7 @@
             <!-- Profile Info -->
             <div class="col-md-9">
                 <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center mb-3">
-                    <h2 class="me-3 mb-2 mb-md-0">nqbich.chu_</h2>
+                    <h2 class="me-3 mb-2 mb-md-0">{{ user.userName }}</h2>
                     <button class="btn btn-outline-light me-2 mb-2 mb-md-0">Chỉnh sửa trang cá nhân</button>
                     <button class="btn btn-outline-light mb-2 mb-md-0">Xem kho lưu trữ</button>
                 </div>
@@ -24,8 +24,8 @@
 
                 <!-- Bio -->
                 <div>
-                    <p class="fw-bold mb-0">Ngoc Bichh</p>
-                    <p class="text-secondary">nqbich.chu_</p>
+                    <p class="fw-bold mb-0">{{ user.fullName }}</p>
+                    <!-- <p class="text-secondary">{{ user.full }}</p> -->
                 </div>
             </div>
         </div>
@@ -80,12 +80,24 @@
 </template>
 
 <script setup>
-// No additional imports needed
-</script>
+import { ref, onMounted } from 'vue';
 
+const user = ref(null);
+
+onMounted(() => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    user.value = currentUser;
+});
+</script>
 <style scoped>
 .container {
     background-color: #000;
     margin-left: 30rem;
+}
+
+span,
+p,
+h2 {
+    color: #f5f5f5;
 }
 </style>

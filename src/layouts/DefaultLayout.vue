@@ -9,7 +9,7 @@
 import Header from '@/components/common/Header.vue'
 </script>
 <style>
-.main{
+.main {
     background-color: black;
     height: 100vh;
 }

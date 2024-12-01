@@ -1,35 +1,24 @@
-<template >
-    <div>
-        <div class="card border-dark container mt-5" style="width: 20%">
+<template>
+  <div>
+    <div class="card border-dark container mt-5" style="width: 20%">
       <div class="d-flex justify-content-center">
         <form style="width: 90%">
           <h2 class="mb-5 d-flex justify-content-center mt-3">Login</h2>
           <div class="mb-3">
             <!-- <label for="exampleInputEmail1" class="form-label">Email address</label> -->
-            <input
-              type="email"
-              class="form-control"
-              id="exampleInputEmail1"
-              aria-describedby="emailHelp"
-              placeholder="Nhập email"
-              v-model="email"
-            />
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Nhập email" v-model="email" />
           </div>
           <div class="mb-3">
             <!-- <label for="exampleInputPassword1" class="form-label">Password</label> -->
-            <input
-              type="password"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="Mật khẩu"
-              v-model="password"
-            />
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mật khẩu"
+              v-model="password" />
           </div>
           <div class="d-flex">
             <!-- <router-link to="/home" type="button" class="btn btn-primary" style="width: 1000px">
               Đăng nhập
             </router-link> -->
-            <button type="button" class="btn btn-primary" style="width: 1000px" @click.prevent="login">
+            <button type="submit" class="btn btn-primary" style="width: 1000px" @click.prevent="login">
               Đăng nhập
             </button>
           </div>
@@ -59,7 +48,7 @@
         <router-link to="/register" class="loginByFb ms-2"> Đăng kí ngay!! </router-link>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -70,25 +59,26 @@ const password = ref('');
 const router = useRouter();
 
 const login = () => {
-  const user = localStorage.getItem('user');
+  const users = JSON.parse(localStorage.getItem('users')) || []; // Lấy danh sách người dùng từ localStorage
+  const user = users.find(
+    u => u.email === email.value && u.password === password.value
+  ); // Tìm người dùng khớp với email và password
+
   if (user) {
-    const userData = JSON.parse(user);
-    if (email.value === userData.email && password.value === userData.password) {
-      // Đăng nhập thành công, chuyển đến trang chủ
-      alert('Đăng nhập thanh cong');
-      console.log(userData)
-      router.push({
-        name: 'home'});
-    } else {
-      // Sai thông tin đăng nhập, hiển thị lỗi
-      alert('Sai thông tin đăng nhập');
-    }
+    // Đăng nhập thành công
+    localStorage.setItem("isAuthenticated", "true"); // Lưu trạng thái xác thực
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    alert('Đăng nhập thành công');
+    console.log(user);
+    router.push({
+      name: 'home'
+    });
   } else {
-    // Chưa có user trong localStorage, hiển thị lỗi
-    alert('Chưa có tài khoản');
+    // Thông tin đăng nhập không đúng
+    alert('Sai thông tin đăng nhập hoặc tài khoản không tồn tại');
   }
 };
 </script>
 <style lang="">
-    
+
 </style>
