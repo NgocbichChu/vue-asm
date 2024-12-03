@@ -77,6 +77,8 @@
     </div>
 </template>
 <script setup>
+import { showToastSuccess } from '@/utils/toastHandle';
+import Swal from 'sweetalert2';
 import { reactive } from 'vue';
 
 const postInfo = reactive({
@@ -96,11 +98,27 @@ const savePost = () => {
     postInfo.content = '';
 }
 
+// const logout = () => {
+//     localStorage.removeItem('isAuthenticated');
+//     window.location.href = '/';
+//     // alert('Đăng xuat thanh cong');
+//     showToastSuccess('Đăng xuat thanh cong');
+// }
 const logout = () => {
-    localStorage.removeItem('isAuthenticated');
-    window.location.href = '/';
-    alert('Đăng xuat thanh cong');
-}
+  Swal.fire({
+    title: "Bạn có muốn đăng xuất không ?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Đăng xuất",
+    cancelButtonText: "Hủy",
+  }).then((result) => {
+    if (result.isConfirmed) {
+    //   localStorage.removeItem("fullName");
+      localStorage.setItem("isAuthenticated", "false");
+      window.location.href = '/';
+    }
+  });
+};
 </script>
 <style scoped>
 #logo {

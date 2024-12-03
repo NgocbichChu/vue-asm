@@ -77,6 +77,7 @@
 </template>
 
 <script setup>
+import { showToastSuccess, showToastWarning } from '@/utils/toastHandle';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -91,7 +92,9 @@ const register = () => {
   const emailExists = users.some(user => user.email === email.value);
 
   if (emailExists) {
-    alert("Email đã được sử dụng");
+    // alert("Email đã được sử dụng");
+    showToastWarning("Email đã được sử dụng");
+
     return;
   }
 
@@ -104,7 +107,8 @@ const register = () => {
 
   users.push(user);
   localStorage.setItem('users', JSON.stringify(users));
-  alert("Đăng ký thành công!");
+//   alert("Đăng ký thành công!");
+showToastSuccess("Đăng ký thành công!");
   router.push('/');
 };
 </script>

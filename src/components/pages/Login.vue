@@ -51,6 +51,7 @@
   </div>
 </template>
 <script setup>
+import { showToastError, showToastSuccess } from '@/utils/toastHandle';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -68,14 +69,16 @@ const login = () => {
     // Đăng nhập thành công
     localStorage.setItem("isAuthenticated", "true"); // Lưu trạng thái xác thực
     localStorage.setItem("currentUser", JSON.stringify(user));
-    alert('Đăng nhập thành công');
+    // alert('Đăng nhập thành công');
+    showToastSuccess('Đăng nhập thành công');
     console.log(user);
     router.push({
       name: 'home'
     });
   } else {
     // Thông tin đăng nhập không đúng
-    alert('Sai thông tin đăng nhập hoặc tài khoản không tồn tại');
+    // alert('Sai thông tin đăng nhập hoặc tài khoản không tồn tại');
+    showToastError('Sai thông tin đăng nhập hoặc tài khoản không tồn tại!');
   }
 };
 </script>
