@@ -22,22 +22,21 @@
             <a href="#" class="mb-3 d-flex align-items-center"><span class="material-symbols-outlined me-4">
                     favorite
                 </span> Thông báo</a>
-            <button type="button" class="mb-3 d-flex align-items-center" data-bs-toggle="modal"
+            <span type="" class="mb-3 d-flex align-items-center btnClick" data-bs-toggle="modal"
                 data-bs-target="#exampleModal"><span class="material-symbols-outlined me-4">
                     add
-                </span> Tạo</button>
+                </span> Tạo</span>
 
             <!-- Modal -->
 
-            <router-link to="/profile" class="mb-3 d-flex align-items-center"><span
-                    class="material-symbols-outlined me-4">
-                    person
-                </span> Trang cá nhân</router-link>
-            <span @click="logout" class="mb-3 d-flex align-items-center"><span class="material-symbols-outlined me-4">
+            <router-link to="/profile" class="mb-3 d-flex align-items-center">
+                <span class="material-symbols-outlined me-4">person</span> Trang cá nhân</router-link>
+            <span @click="logout" class="mb-3 d-flex align-items-center btnClick"><span class="material-symbols-outlined me-4">
                     logout
                 </span> Đăng xuất</span>
         </div>
     </div>
+    <!-- Modal -->
     <div>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -128,4 +127,18 @@ const logout = () => {
     background-color: #1a1a1a;
     width: 270px;
 }
+.btnClick{
+    color: #f5f5f5;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: calc(.875rem - 2px);
+    width: 270px;
+    transition: background-color 0.3s ease;
+}
+.btnClick:hover{
+    background-color: #1a1a1a;
+    width: 270px;
+    cursor: pointer;
+}
+
 </style>
